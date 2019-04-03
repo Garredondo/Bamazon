@@ -144,7 +144,55 @@ function addToInv() {
 // add new product
 // add new product into the array
 function addNewProduct() {
-    console.log("Hello");
+    inquirer.prompt([
+        {
+            name: "item",
+            type: "input",
+            message: "What is the name of the new product you would like add?"
+        },
+        {
+            name: "department",
+            type: "input",
+            message: "To what department would you like to assign the new product?"
+        },
+        {
+            name: "price",
+            type: "input",
+            message: "What is the price of the new product?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        {
+            name: "stock",
+            type: "input",
+            message: "How much stock would you like to add?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
+        }
+    ]).then(function (answer) {
+        connection.query("INSERT INTO products SET ?",
+            {
+                product_name: answer.item,
+                department_name: answer.department,
+                price: answer.price,
+                stock_quantity: answer.stock
+            },
+            function(err){
+                if(err) throw err;
+                console.log("\nNew product added.\n");
+                connection.end();
+            }
+        );
+    })
+
 }
 
 
