@@ -2,11 +2,12 @@
 var mysql = require("mysql");
 var Table = require("easy-table");
 var inquirer = require("inquirer");
+var chalk = require("chalk");
 
 // when the node application is run...
 // connect to sql database
 var connection = mysql.createConnection({
-    // store credentials
+    // set credentials
     host: "localhost",
     port: 8889,
     user: "root",
@@ -20,7 +21,7 @@ connection.connect(function (err) {
 
 // display the contents of the database with all columns and rows
 function displayOfferings() {
-    console.log("Bamazon\n");
+    console.log(chalk.green("\n\nBamazon\n"));
     connection.query("SELECT * FROM products\n", function (err, res) {
         if (err) throw err;
 
@@ -74,8 +75,7 @@ function askUser() {
             // verify quantity
 
             var userSelectedItem = results[answer.itemDesired - 1];
-            console.log("Current stock of user's selection: " + userSelectedItem.stock_quantity);
-    
+        
             checkStock(userSelectedItem, answer);
         });
     });
@@ -83,20 +83,20 @@ function askUser() {
 
 function checkStock(userSelectedItem, answer) {
     if (userSelectedItem.stock_quantity < answer.quantity) {
-        console.log("Sorry there is an insufficient amount of stock to make your request.");
+        console.log("\n\nSorry there is an insufficient amount of stock to make your request.");
         displayOfferings();
     } else {
         var total = answer.quantity * userSelectedItem.price;
-        console.log("Calculating your total...");
-        console.log("Your total is " + total.toFixed(2));
+        console.log("\n\nCalculating your total...");
+        console.log("\nYour total is " + chalk.red(total.toFixed(2)));
         connection.query("UPDATE products SET ? WHERE ?", [{
             stock_quantity: userSelectedItem.stock_quantity - parseInt(answer.quantity)
         }, {
             item_id: userSelectedItem.item_id
         }], function (err) {
             if (err) throw err;
-            console.log("Thank you for your business!")
-            displayOfferings();
+            console.log("\nThank you for your business!");
+            connection.end();
         })
     }
 }
