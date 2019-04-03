@@ -6,14 +6,14 @@ USE bamazon;
 -- create table to hold the products --
 CREATE TABLE products(
 -- create a unique id for each row --
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    item_id INTEGER NOT NULL AUTO_INCREMENT,
 -- create columns for the following product information -- 
     product_name VARCHAR(100) NOT NULL,
     department_name VARCHAR(50) NOT NULL,
     price DECIMAL(10, 2),
     stock_quantity INTEGER (10),
 -- make the unique id the primary key --
-    PRIMARY KEY (id)
+    PRIMARY KEY (item_id)
 );
 
 -- insert products --
