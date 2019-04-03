@@ -95,7 +95,7 @@ function checkStock(userSelectedItem, answer) {
             item_id: userSelectedItem.item_id
         }], function (err) {
             if (err) throw err;
-            console.log("\nThank you for your business!");
+            console.log("\nThank you for your business!\n\n");
             connection.end();
         })
     }

@@ -50,7 +50,7 @@ function presentMenu() {
     });
 }
 // using the easy-table npm, generate the table for the goods to be displayed
-function createTable(res){
+function createTable(res) {
     // using easy-table npm to create a table of the available goods
     var t = new Table;
     res.forEach(function (product) {
@@ -69,9 +69,10 @@ function viewProducts() {
     console.log(chalk.green("\n\nBamazon - Manager View\n"));
     connection.query("SELECT * FROM products\n", function (err, res) {
         if (err) throw err;
-// called the function for the goods to be displayed
+        // called the function for the goods to be displayed
         createTable(res);
     });
+    connection.end();
 }
 // view low inventory
 // list every item with an inventory count lower than 5
@@ -83,46 +84,60 @@ function viewLowInv() {
         // if (res < 0){
         //     console.log("No products have less than five in stock.")
         // }
-// called the function for the goods to be displayed
+        // called the function for the goods to be displayed
         createTable(res);
     });
+    connection.end();
 }
 
 // add to inventory
-// prompt, let manager add inventory to any item in stock... you need make an array
+// prompt, let manager add inventory to any item in stock
 function addToInv() {
-    connection.query("SELECT * FROM products", function(err, res){
+    connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         inquirer.prompt([
             {
                 name: "choice",
                 type: "rawlist",
-                choices: function(){
+                choices: function () {
                     var choiceArray = [];
-                    for(var i = 0; i < res.length; i++){
+                    for (var i = 0; i < res.length; i++) {
                         choiceArray.push(res[i].product_name);
                     }
                     return choiceArray;
                 },
-                message: "To which item would you like to add stock?" 
+                message: "To which item would you like to add stock?"
             },
             {
                 name: "additionalStock",
                 type: "input",
                 message: "How much stock would you like to add?",
-                validate: function(value){
-                    if (isNaN(value) === false){
+                validate: function (value) {
+                    if (isNaN(value) === false) {
                         return true;
                     }
                     return false;
                 }
             }
-        ]).then(function(answer){
-            console.log(answer.choice);
-            console.log(answer.additionalStock);
-            // connection.query("INSERT INTO products SET ?", {
-
-            // })
+        ]).then(function (answer) {
+            var chosenItem;
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].product_name === answer.choice) {
+                    chosenItem = res[i];
+                }
+            }
+            connection.query("UPDATE products SET ? WHERE ?", [
+                {
+                    stock_quantity: chosenItem.stock_quantity + parseInt(answer.additionalStock)
+                },
+                {
+                    item_id: chosenItem.item_id
+                }
+            ], function (err) {
+                if (err) throw err;
+                console.log("\nInventory added\n");
+                connection.end();
+            })
         })
     })
 }
@@ -131,4 +146,6 @@ function addToInv() {
 function addNewProduct() {
     console.log("Hello");
 }
+
+
 
