@@ -1,67 +1,56 @@
 # Bamazon
 
-If you like Amazon, then you are going to love Bamazon. 
-
-Bamazon is an Amazon-like storefront accessed through the command line. The app takes in orders from customers and deplete stock from the store's inventory. 
+Bamazon is an Amazon-like storefront accessed through the command line. In the customer view of this app users are allowed to purchase items which deplete the inventory. In the manager view, the user can see the product offerings, view items with less than five items in stocks, add inventory, and add an entirely new product to the store.
 
 ### Customer View
 
-3. The products table should have each of the following columns:
+At the start of the program, the storefront is displayed to the user and the user is asked which item they would like to purchase. 
 
-   * item_id (unique id for each product)
+The products table has the following columns:
+  * A unique Id for each product, 
+  * The name of the product,
+  * The department where to find the product,
+  * The price, and
+  * Available inventory.
 
-   * product_name (Name of product)
+When the user is ready, they can respond to the prompt by inputting the item id. The user must select a number if not the entry will not be accepted. When the entry is accepted the user is then asked the quantity of the item they would like to purchase. Again, if a number is not inputted the response is not accepted. 
 
-   * department_name
+Once the item and amount have been logged the program verifies that there is enough stock to meet the customer's demand. If not, the transaction is stopped and the user is prompted with the message stating that there is an insufficient quantity. The user is presented with the storefront to amend their purchase quantity. When the amount of the order can be fulfilled the program calculates and displays the total cost of the user's purchase. 
 
-   * price (cost to customer)
-
-   * stock_quantity (how much of the product is available in stores)
-
-4. Populate this database with around 10 different products. (i.e. Insert "mock" data rows into this database and table).
-
-5. Then create a Node application called `bamazonCustomer.js`. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
-
-6. The app should then prompt users with two messages.
-
-   * The first should ask them the ID of the product they would like to buy.
-   * The second message should ask how many units of the product they would like to buy.
-
-7. Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-
-   * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
-
-8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
-   * This means updating the SQL database to reflect the remaining quantity.
-   * Once the update goes through, show the customer the total cost of their purchase.
-
-- - -
-
-* If this activity took you between 8-10 hours, then you've put enough time into this assignment. Feel free to stop here -- unless you want to take on the next challenge.
-
-- - -
+Lastly, the stock updated to reflect the customer's purchase.
 
 ### Manager View
 
-* Create a new Node application called `bamazonManager.js`. Running this application will:
+Running the Manager View of the application will present the user with a menu of options that include:
+  * View products for sale,
+  * View low inventory,
+  * Add to inventory, and
+  * Add a new product.
 
-  * List a set of menu options:
+Selecting 'View products for sale' will display all available items for sale.
 
-    * View Products for Sale
-    
-    * View Low Inventory
-    
-    * Add to Inventory
-    
-    * Add New Product
+'View low inventory' will return all products with a current stock of less than five.
 
-  * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+Picking 'Add to inventory' will prompt the user to select an item in which they would like to add stock and then ask the amount of stock to be added. 
 
-  * If a manager selects `View Low Inventory`, then it should list all items with an inventory count lower than five.
+Choosing to 'Add a new product' will ask the user the name, department, price, and stock of the new product to be added.
 
-  * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
+## Usefulness of Project
 
-  * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
+This application connects to a MySQL database to store the information that is used for the application. 
 
-- - -
+The app uses the following npm packages:
+  * mysql - to record the storefront,
+  * inquirer - to interact with the user,
+  * easy-table - to display the database data in a table, and
+  * chalk - to highlight certain text throughout the program. 
+
+## Demo
+
+For a demonstration of the project in action please click the link below.
+
+## Contact Information
+
+The project is maintained by George Arredondo.
+
 
