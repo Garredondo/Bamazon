@@ -75,7 +75,7 @@ function askUser() {
             // verify quantity
 
             var userSelectedItem = results[answer.itemDesired - 1];
-        
+    
             checkStock(userSelectedItem, answer);
         });
     });
@@ -88,7 +88,7 @@ function checkStock(userSelectedItem, answer) {
     } else {
         var total = answer.quantity * userSelectedItem.price;
         console.log("\n\nCalculating your total...");
-        console.log("\nYour total is " + chalk.red(total.toFixed(2)));
+        console.log("\nYour total is " + chalk.bgYellow(total.toFixed(2)));
         connection.query("UPDATE products SET ? WHERE ?", [{
             stock_quantity: userSelectedItem.stock_quantity - parseInt(answer.quantity)
         }, {

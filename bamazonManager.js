@@ -142,7 +142,6 @@ function addToInv() {
     })
 }
 // add new product
-// add new product into the array
 function addNewProduct() {
     inquirer.prompt([
         {
