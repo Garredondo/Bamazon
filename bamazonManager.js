@@ -20,7 +20,7 @@ connection.connect(function (err) {
     presentMenu();
 });
 
-// list menu options
+// list menu options, and depending on which option is selected call the function
 function presentMenu() {
     inquirer.prompt({
         name: "action",
@@ -63,8 +63,7 @@ function createTable(res) {
     });
     console.log(t.toString());
 }
-// View Products for sale
-// if this... list items, id, name, prices and quantities
+// View products for sale
 function viewProducts() {
     console.log(chalk.green("\n\nBamazon - Manager View\n"));
     connection.query("SELECT * FROM products\n", function (err, res) {
@@ -74,24 +73,17 @@ function viewProducts() {
     });
     connection.end();
 }
-// view low inventory
-// list every item with an inventory count lower than 5
+// view low inventory - list every item with an inventory count lower than 5 by querying the database
 function viewLowInv() {
     console.log(chalk.green("\n\nManager View - Low Inventory\n"));
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, res) {
         if (err) throw err;
-        // *** QUESTION HOW TO DEFINE THIS AS EMPTY
-        // if (res < 0){
-        //     console.log("No products have less than five in stock.")
-        // }
-        // called the function for the goods to be displayed
         createTable(res);
     });
     connection.end();
 }
 
-// add to inventory
-// prompt, let manager add inventory to any item in stock
+// query the database and add to inventory to appropriate item
 function addToInv() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -141,7 +133,7 @@ function addToInv() {
         })
     })
 }
-// add new product
+// add new product, inquirer is used to question the user and gather responses those are then used to query the database and add a new item
 function addNewProduct() {
     inquirer.prompt([
         {

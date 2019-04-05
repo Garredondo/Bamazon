@@ -31,9 +31,9 @@ Selecting 'View products for sale' will display all available items for sale.
 
 'View low inventory' will return all products with a current stock of less than five.
 
-Picking 'Add to inventory' will prompt the user to select an item in which they would like to add stock and then ask the amount of stock to be added. 
+Picking 'Add to inventory' will prompt the user to select an item in which they would like to add stock and then ask the amount of stock to be added. Both values are checked to validate values as numbers.
 
-Choosing to 'Add a new product' will ask the user the name, department, price, and stock of the new product to be added.
+Choosing to 'Add a new product' will ask the user the name, department, price, and stock of the new product to be added. The price and stock can only be numbers.
 
 ## Usefulness of Project
 
@@ -48,6 +48,8 @@ The app uses the following npm packages:
 ## Demo
 
 For a demonstration of the project in action please click the link below.
+
+https://youtu.be/7okAQp-hMtI
 
 ## Contact Information
 

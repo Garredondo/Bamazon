@@ -19,7 +19,7 @@ connection.connect(function (err) {
     if (err) throw err;
 });
 
-// display the contents of the database with all columns and rows
+// display the contents of the mysql database with all columns and rows
 function displayOfferings() {
     console.log(chalk.green("\n\nBamazon\n"));
     connection.query("SELECT * FROM products\n", function (err, res) {
@@ -36,18 +36,18 @@ function displayOfferings() {
             t.newRow();
         });
         console.log(t.toString());
+        // run the function to interact with the user
         askUser();
     });
 }
 // with inquirer -- prompt the user
-
 function askUser() {
+    // querying the database
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-
         inquirer.prompt([
             {
-                // what they would like to buy
+                // what user would like to buy
                 name: "itemDesired",
                 type: "input",
                 message: "What 'Item' would you like to purchase?",
@@ -71,24 +71,29 @@ function askUser() {
                 },
             }
         ]).then(function (answer) {
-            // with answers
-            // verify quantity
-
+            // store the user's selection
             var userSelectedItem = results[answer.itemDesired - 1];
-    
+
+            // call function to verify quantity
             checkStock(userSelectedItem, answer);
         });
     });
 }
 
+// function to check stock
 function checkStock(userSelectedItem, answer) {
+    // if there is not enough stock console.log a message
     if (userSelectedItem.stock_quantity < answer.quantity) {
-        console.log("\n\nSorry there is an insufficient amount of stock to make your request.");
+        console.log(chalk.red("\n\nSorry there is an insufficient amount of stock to make your request.\n\nPlease reduce the amount and try again."));
         displayOfferings();
     } else {
+        // if there is enough stock... complete order, present total, and reduce the stock
+
+        // total = cost to user
         var total = answer.quantity * userSelectedItem.price;
         console.log("\n\nCalculating your total...");
         console.log("\nYour total is " + chalk.bgYellow(total.toFixed(2)));
+        // query database to update (reduce) the stock
         connection.query("UPDATE products SET ? WHERE ?", [{
             stock_quantity: userSelectedItem.stock_quantity - parseInt(answer.quantity)
         }, {
